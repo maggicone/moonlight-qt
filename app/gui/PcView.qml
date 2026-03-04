@@ -8,6 +8,7 @@ import ComputerManager 1.0
 import StreamingPreferences 1.0
 import SystemProperties 1.0
 import SdlGamepadKeyNavigation 1.0
+import WolBridge 1.0
 
 CenteredGridView {
     property ComputerModel computerModel : createModel()
@@ -243,6 +244,8 @@ CenteredGridView {
                     pairDialog.open()
                 }
             } else if (!model.online) {
+                // Send WoL signal when clicking on an offline PC
+                WolBridge.wake()
                 // Using open() here because it may be activated by keyboard
                 pcContextMenu.open()
             }
