@@ -23,6 +23,7 @@
 // that might include SDL.h themselves.
 #define SDL_MAIN_HANDLED
 #include "SDL_compat.h"
+#include "wolbridge.h"
 
 #ifdef HAVE_FFMPEG
 #include "streaming/video/ffmpeg.h"
@@ -900,6 +901,8 @@ int main(int argc, char *argv[])
                                                    [](QQmlEngine* qmlEngine, QJSEngine*) -> QObject* {
                                                        return StreamingPreferences::get(qmlEngine);
                                                    });
+
+    qmlRegisterSingletonType<WolBridge>("WolBridge", 1, 0, "WolBridge", WolBridge::create);
 
     // Create the identity manager on the main thread
     IdentityManager::get();

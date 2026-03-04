@@ -200,6 +200,8 @@ SOURCES += \
 
 HEADERS += \
     SDL_compat.h \
+    wol.h \
+    wolbridge.h \
     backend/nvaddress.h \
     backend/nvapp.h \
     cli/pair.h \
