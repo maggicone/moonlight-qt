@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
-
+import WolBridge 1.0
 import StreamingPreferences 1.0
 import ComputerManager 1.0
 import SdlGamepadKeyNavigation 1.0
@@ -1753,5 +1753,91 @@ Flickable {
                 }
             }
         }
+
+        GroupBox {
+            id: wolSettingsGroupBox
+            width: (parent.width - 20)
+            padding: 12
+
+            label: Label {
+                text: qsTr("Wake-on-LAN")
+                font.pointSize: 14
+                font.bold: true
+            }
+
+            Column {
+                spacing: 12
+                width: parent.width
+
+                Label {
+                    width: parent.width
+                    wrapMode: Text.Wrap
+                    font.pointSize: 11
+                    text: qsTr("Automatically send a Wake-on-LAN signal before starting a streaming session.")
+                }
+
+                CheckBox {
+                    id: wolEnabledCheck
+                    width: parent.width
+                    text: qsTr("Enable Wake-on-LAN")
+                    font.pointSize: 12
+                    checked: WolBridge.enabled
+                    onCheckedChanged: {
+                        WolBridge.save(wolUrlField.text, wolTokenField.text, checked)
+                    }
+                }
+
+                Label {
+                    visible: wolEnabledCheck.checked
+                    width: parent.width
+                    text: qsTr("API URL")
+                    font.pointSize: 11
+                    opacity: 0.75
+                }
+
+                TextField {
+                    id: wolUrlField
+                    visible: wolEnabledCheck.checked
+                    width: parent.width
+                    placeholderText: "http://192.168.1.100:8765/wake/pc-principale"
+                    font.pointSize: 11
+                    text: WolBridge.url
+                    onEditingFinished: {
+                        WolBridge.save(text, wolTokenField.text, wolEnabledCheck.checked)
+                    }
+                }
+
+                Label {
+                    visible: wolEnabledCheck.checked
+                    width: parent.width
+                    text: qsTr("Auth Token")
+                    font.pointSize: 11
+                    opacity: 0.75
+                }
+
+                TextField {
+                    id: wolTokenField
+                    visible: wolEnabledCheck.checked
+                    width: parent.width
+                    placeholderText: qsTr("your-secret-token")
+                    echoMode: TextInput.Password
+                    font.pointSize: 11
+                    text: WolBridge.token
+                    onEditingFinished: {
+                        WolBridge.save(wolUrlField.text, text, wolEnabledCheck.checked)
+                    }
+                }
+
+                Label {
+                    visible: wolEnabledCheck.checked
+                    width: parent.width
+                    wrapMode: Text.Wrap
+                    font.pointSize: 10
+                    opacity: 0.5
+                    text: qsTr("The magic packet will be sent automatically every time you start a streaming session. The PC is expected to be booting while Moonlight connects.")
+                }
+            }
+        }
     }
 }
+

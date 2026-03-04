@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.2
 import AppModel 1.0
 import ComputerManager 1.0
 import SdlGamepadKeyNavigation 1.0
+import WolBridge 1.0
 
 CenteredGridView {
     property int computerIndex
@@ -224,6 +225,8 @@ CenteredGridView {
                                                    "session": appModel.createSessionForApp(index),
                                                    "isResume": runningId === model.appid
                                                })
+            // Send WoL magic packet before streaming (fire-and-forget)
+            WolBridge.wake()
             stackView.push(segue)
         }
 
