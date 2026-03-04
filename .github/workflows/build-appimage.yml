@@ -4,6 +4,8 @@ permissions:
   contents: read
 
 on:
+  workflow_dispatch:
+  push:
   workflow_call:
     inputs:
       ci_version:
